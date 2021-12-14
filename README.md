@@ -6,9 +6,9 @@ Designed and Implemented 6 different web apps to get the Professional Certificat
 
 ### Final Project
 
-### Other Projects
+### Previous Projects
 
-4. #### Network
+4. #### [Network](Web Programming with Python and Javascript/4. Network)
 
 Designed a Twitter-like social network website for making posts and following users.
 
@@ -45,3 +45,4 @@ Designed a front-end for Google Search, Google Image Search, and Google Advanced
 - Week 2 Arrays
 - Week 1 C
 - Week 0 Scratch
+
