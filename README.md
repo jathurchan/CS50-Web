@@ -8,7 +8,7 @@ Designed and Implemented 6 different web apps to get the Professional Certificat
 
 ### Previous Projects
 
-4. #### [Network](Web Programming with Python and Javascript/4. Network)
+4. #### [Network](https://github.com/jathurchan/CS50-Web-Harvard/tree/main/Web%20Programming%20with%20Python%20and%20Javascript/4.%20Network)
 
 Designed a Twitter-like social network website for making posts and following users.
 
