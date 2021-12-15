@@ -5,7 +5,7 @@ import uuid
 
 
 class User(AbstractUser):
-    pass
+    following = models.ManyToManyField("self", blank=True, symmetrical=False, related_name="followers")
 
 class Post(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # each post uniquely identified using UUID v4

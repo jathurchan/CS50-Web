@@ -1,0 +1,32 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+
+    <h1>@{{username}}</h1>
+
+    {% if user.is_authenticated and user.username != username %}
+        <form action="{% url 'profile' username=username %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="is_following" value="{{ is_following }}">
+            {% if is_following %}
+                <button type="submit" class="btn btn-light" style="margin: 5px 0;">Following</button>
+            {% else %}
+                <button type="submit" class="btn btn-dark" style="margin: 5px 0;">Follow</button>
+            {% endif %}
+        </form>
+    {% endif %}
+
+    <p><strong>{{following_counter}}</strong> Following <strong>{{followers_counter}}</strong> Followers</p>
+
+    {% for post in user_posts %}
+    <div class="card" style="margin: 5px 0;">
+        <div class="card-body">
+            <a href="{% url 'profile' username=post.user.username %}"><h6>@{{ post.user }}</h6></a>
+            <h5>{{ post.text }}</h5>
+            <p>{{ post.created_at }}</p>
+            <p><b>{{ post.likes }}</b> Likes</p>
+        </div>
+    </div>
+    {% endfor %}
+    
+{% endblock %}

@@ -28,6 +28,13 @@ def index(request):
     })
 
 
+def error(request, errorTitle, errorMessage):
+    return render(request, "network/error.html", {
+        "errorTitle": errorTitle,
+        "errorMessage": errorMessage
+    })
+
+
 def login_view(request):
     if request.method == "POST":
 
@@ -78,3 +85,55 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+
+
+def profile_view(request, username):
+
+    # Attempt to get the user profile
+    try:
+
+        profile_user = User.objects.get(username=username)
+
+        followers = profile_user.followers
+        connected_username = request.user.username
+        
+        is_following = followers.filter(username=connected_username).count() > 0    # if 1 the connected user is already following
+        connected_user = User.objects.get(username=connected_username)
+        
+        # Toggle Follow / Following
+
+        if request.method == "POST":
+
+            if is_following:
+                connected_user.following.remove(profile_user)
+            else:
+                connected_user.following.add(profile_user)
+
+            is_following = followers.filter(username=connected_username).count() > 0    # if 1 the connected user is already following
+
+        # Update the counters
+
+        following_counter = profile_user.following.count()  
+        followers_counter = profile_user.followers.count()
+
+        # Get the posts created by the profile user
+        
+        user_posts = Post.objects.filter(user=profile_user)
+        user_posts = user_posts.order_by('-created_at')
+
+        return render(request, "network/profile.html", {
+            "username": username,
+            "following_counter": following_counter,
+            "followers_counter": followers_counter,
+            "user_posts": user_posts,
+            "is_following": is_following
+        })
+    except:
+        return error(request, "ERROR 404", "The requested page not found !")
+
+    
+    
+    
+    
+    
+    
