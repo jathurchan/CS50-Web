@@ -3,13 +3,15 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 from .models import User, Post
 import operator
 
 
 def index(request):
-    if request.method == "POST":
+    
+    if request.method == "POST":    # Create new post
 
         # Get the username & text of the POST
         user = request.user
@@ -23,8 +25,20 @@ def index(request):
     # Get all posts and sort them : with the most recent post first
     all_posts = Post.objects.order_by('-created_at')
 
+    page_index = request.GET.get('page', 1) # Get the page index from the URL
+
+    p = Paginator(all_posts, 10)
+
+    try:
+        c_page = p.page(page_index)
+    except PageNotAnInteger:    # Get to the first page
+        c_page = p.page(1)
+    except EmptyPage:   # Get to the last existing page
+        c_page = p.page(p.num_pages)
+
+
     return render(request, "network/index.html", {
-        "posts": all_posts
+        "c_page": c_page
     })
 
 
@@ -121,11 +135,24 @@ def profile_view(request, username):
         user_posts = Post.objects.filter(user=profile_user)
         user_posts = user_posts.order_by('-created_at')
 
+        # Pagination
+
+        page_index = request.GET.get('page', 1) # Get the page index from the URL
+
+        p = Paginator(user_posts, 10)
+
+        try:
+            c_page = p.page(page_index)
+        except PageNotAnInteger:    # Get to the first page
+            c_page = p.page(1)
+        except EmptyPage:   # Get to the last existing page
+            c_page = p.page(p.num_pages)
+
         return render(request, "network/profile.html", {
             "username": username,
             "following_counter": following_counter,
             "followers_counter": followers_counter,
-            "user_posts": user_posts,
+            "c_page": c_page,
             "is_following": is_following
         })
     except:
@@ -141,6 +168,19 @@ def following_view(request):
     f_posts = Post.objects.filter(user__in=f_users) # posts of f_users
     f_posts = f_posts.order_by('-created_at')
 
+    # Pagination
+
+    page_index = request.GET.get('page', 1) # Get the page index from the URL
+
+    p = Paginator(f_posts, 10)
+
+    try:
+        c_page = p.page(page_index)
+    except PageNotAnInteger:    # Get to the first page
+        c_page = p.page(1)
+    except EmptyPage:   # Get to the last existing page
+        c_page = p.page(p.num_pages)
+
     return render(request, "network/following.html", {
-        "f_posts": f_posts
+        "c_page": c_page
     })

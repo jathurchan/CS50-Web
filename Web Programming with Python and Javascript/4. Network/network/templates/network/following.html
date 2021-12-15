@@ -3,14 +3,27 @@
 {% block body %}
 
     <h1>Following</h1>
-    {% for post in f_posts %}
-        <div class="card" style="margin: 5px 0;">
-            <div class="card-body">
-                <a href="{% url 'profile' username=post.user.username %}"><h6>@{{ post.user }}</h6></a>
-                <h5>{{ post.text }}</h5>
-                <p>{{ post.created_at }}</p>
-                <p><b>{{ post.likes }}</b> Likes</p>
-            </div>
+    {% for post in c_page.object_list %}
+    <div class="card" style="margin: 5px 0;">
+        <div class="card-body">
+            <a href="{% url 'profile' username=post.user.username %}"><h6>@{{ post.user }}</h6></a>
+            <h5>{{ post.text }}</h5>
+            <p>{{ post.created_at }}</p>
+            <p><b>{{ post.likes }}</b> Likes</p>
         </div>
+    </div>
     {% endfor %}
+
+    {% if c_page.has_other_pages %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if c_page.has_previous %}
+                <li class="page-item"><a class="page-link" href="?page={{ c_page.previous_page_number }}">Previous</a></li>
+            {% endif %}
+            {% if c_page.has_next %}
+                <li class="page-item"><a class="page-link" href="?page={{ c_page.next_page_number }}">Next</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
 {% endblock %}
