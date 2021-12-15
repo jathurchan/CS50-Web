@@ -4,11 +4,28 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User
+from .models import User, Post
+import operator
 
 
 def index(request):
-    return render(request, "network/index.html")
+    if request.method == "POST":
+
+        # Get the username & text of the POST
+        user = request.user
+        text = request.POST["text"]
+
+        # Create and save the post
+        post = Post(user=user, text=text)
+        post.save()
+    
+    
+    # Get all posts and sort them : with the most recent post first
+    all_posts = Post.objects.order_by('-created_at')
+
+    return render(request, "network/index.html", {
+        "posts": all_posts
+    })
 
 
 def login_view(request):
