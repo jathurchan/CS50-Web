@@ -1,4 +1,16 @@
 {% extends "network/layout.html" %}
 
 {% block body %}
+
+    <h1>Following</h1>
+    {% for post in f_posts %}
+        <div class="card" style="margin: 5px 0;">
+            <div class="card-body">
+                <a href="{% url 'profile' username=post.user.username %}"><h6>@{{ post.user }}</h6></a>
+                <h5>{{ post.text }}</h5>
+                <p>{{ post.created_at }}</p>
+                <p><b>{{ post.likes }}</b> Likes</p>
+            </div>
+        </div>
+    {% endfor %}
 {% endblock %}

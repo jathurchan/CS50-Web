@@ -131,9 +131,16 @@ def profile_view(request, username):
     except:
         return error(request, "ERROR 404", "The requested page not found !")
 
+
+def following_view(request):
+
+    c_user = User.objects.get(username=request.user.username)   # connected user
     
+    f_users =  list(c_user.following.all()) # users followed by c_user
     
-    
-    
-    
-    
+    f_posts = Post.objects.filter(user__in=f_users) # posts of f_users
+    f_posts = f_posts.order_by('-created_at')
+
+    return render(request, "network/following.html", {
+        "f_posts": f_posts
+    })
