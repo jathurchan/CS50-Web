@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector('#archived').addEventListener('click', () => load_mailbox('archive'));
   document.querySelector('#compose').addEventListener('click', compose_email);
 
+  // Update the style of emails-view
+  document.querySelector('#emails-view').classList.add('list-group');
+
   // By default, load the inbox
   load_mailbox('inbox');
 });
@@ -30,6 +33,60 @@ function load_mailbox(mailbox) {
 
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
+
+   // Mailbox
+   fetch(`/emails/${mailbox}`)
+   .then(response => response.json())
+   .then(emails => {
+
+     // Print emails
+     console.log(emails);
+
+     // Show mails
+
+     emails.forEach(email => {
+
+       document.querySelector('#emails-view').classList.add('list-group');
+
+       const element = document.createElement('a');
+       element.classList.add('list-group-item', 'list-group-item-action');
+       element.href = '#'
+
+       // Color the elements (Read?)
+       if (email.read === true) {
+         console.log(email.read);
+         element.style.backgroundColor = '#f5f5f5';
+       } else {
+         element.style.backgroundColor = '#fff';
+       }
+
+       const innerEl = document.createElement('div');
+       innerEl.classList.add('d-flex', 'w-100', 'justify-content-between');
+
+       const left = document.createElement('div');
+       left.classList.add('d-flex');
+
+       const sender = document.createElement('b');
+       sender.innerHTML = email.sender;
+       sender.style.paddingRight = '10px';
+       sender.bold 
+
+       const subject = document.createElement('p');
+       subject.innerHTML = email.subject;
+       left.append(sender, subject)
+
+       const timestamp = document.createElement('p');
+       timestamp.innerHTML = email.timestamp;
+
+       innerEl.append(left)
+       innerEl.append(timestamp);
+       element.append(innerEl);
+       document.querySelector('#emails-view').append(element);
+
+     });
+
+
+   });
 }
 
 function send_mail() {
@@ -43,7 +100,7 @@ function send_mail() {
   })
   .then(response => response.json())
   .then(result => {
-    load_mailbox('sent');
     console.log(result);
+    load_mailbox('sent');
   })
 }
