@@ -8,7 +8,12 @@ from .models import User, Listing, Bid, Comment
 
 
 def index(request):
-    return render(request, "auctions/index.html")
+
+    active_listings = Listing.objects.filter(is_active=True)
+
+    return render(request, "auctions/index.html", {
+        "active_listings": active_listings
+    })
 
 
 def create_listing_view(request):
@@ -25,7 +30,7 @@ def create_listing_view(request):
         user = User.objects.get(username=request.user.username)
 
         # Create a new object Listing
-        listing = Listing(title=title, description=description, user=user)
+        listing = Listing(title=title, description=description, user=user, current_price=starting_price)
         if image_url:
             listing.image_url = image_url
         if category:
@@ -35,9 +40,9 @@ def create_listing_view(request):
         # Create the starting bid
         starting_bid = Bid(user=user, listing=listing, price=starting_price)
         starting_bid.save()
+
+        return HttpResponseRedirect(reverse("index"))
         
-    
-    print(Listing.objects.all(), Bid.objects.all())
 
     categories = [name for _, name in Listing.CATEGORY_CHOICES] # Get the names of all categories
 

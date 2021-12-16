@@ -1,6 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.db.models.deletion import CASCADE
+from django.db.models.deletion import CASCADE, RESTRICT
 
 
 class User(AbstractUser):
@@ -25,8 +25,13 @@ class Listing(models.Model):
     description = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_listings")
 
+    current_price = models.DecimalField(default=0, max_digits=8, decimal_places=2)
+
     image_url = models.URLField(blank=True)
     category = models.CharField(max_length=2, blank=True, choices=CATEGORY_CHOICES)
+
+    is_active = models.BooleanField(default=True)
+    winner = models.ForeignKey(User, blank=True, null=True, on_delete=RESTRICT, related_name="winner_listings")
 
     watchers = models.ManyToManyField(User, blank=True, related_name="watchlist")
 
