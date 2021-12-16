@@ -1,0 +1,10 @@
+{% extends "encyclopedia/layout.html" %}
+
+{% block title %}
+    {{errorTitle}}
+{% endblock %}
+
+{% block body %}
+    <h1 style="color: saddlebrown;">{{errorTitle}}</h1>
+    <p>{{errorMessage}}</p>
+{% endblock %}
