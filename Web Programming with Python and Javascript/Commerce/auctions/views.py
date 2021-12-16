@@ -4,11 +4,46 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User
+from .models import User, Listing, Bid, Comment
 
 
 def index(request):
     return render(request, "auctions/index.html")
+
+
+def create_listing_view(request):
+
+    if request.method == "POST":
+
+        # Get all parameters
+        title = request.POST["title"]
+        description = request.POST["description"]
+        starting_price = request.POST["starting_price"]
+        image_url = request.POST["image_url"]
+        category = request.POST["category"]
+
+        user = User.objects.get(username=request.user.username)
+
+        # Create a new object Listing
+        listing = Listing(title=title, description=description, user=user)
+        if image_url:
+            listing.image_url = image_url
+        if category:
+            listing.category = category
+        listing.save()
+
+        # Create the starting bid
+        starting_bid = Bid(user=user, listing=listing, price=starting_price)
+        starting_bid.save()
+        
+    
+    print(Listing.objects.all(), Bid.objects.all())
+
+    categories = [name for _, name in Listing.CATEGORY_CHOICES] # Get the names of all categories
+
+    return render(request, "auctions/create.html", {
+        "categories": categories
+    })
 
 
 def login_view(request):

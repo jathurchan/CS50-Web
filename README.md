@@ -25,7 +25,7 @@ CS50’s Introduction to Computer Science
 
 ----
 
-## Useful Links
+### Useful Links
 
 - Bootstrap: [https://getbootstrap.com/docs/5.1/getting-started/introduction/](https://getbootstrap.com/docs/5.1/getting-started/introduction/)
 - Django Modal field reference: [https://docs.djangoproject.com/en/4.0/ref/models/fields/](https://docs.djangoproject.com/en/4.0/ref/models/fields/)
