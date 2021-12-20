@@ -1,0 +1,94 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    
+    {% if bid_error %}
+        <div class="alert alert-warning" role="alert">
+            Your bid must be at least as large as the starting bid, and must be greater than any other bids that have been placed.
+        </div>
+    {% endif %}
+
+    <h2>Listing: {{listing.title}}</h2>
+    
+    {% if is_c_user_watching %}
+        <p><span class="badge bg-secondary text-light">Watchlist</span></p>
+    {% endif %}
+
+    <div class="form-group">
+        <img src="{{listing.image_url}}" class="img-fluid">
+    </div>
+
+    <p>{{listing.description}}</p>
+    <h3>${{listing.current_price}}</h3>
+    
+    {% if listing.is_active %}
+        <p>{{listing.listing_bids.count}} bid(s) so far. {% if is_c_user_winner %}Your bid is the current bid. {% endif %}</p>
+    {% else %}
+        {% if not listing.is_active and is_c_user_winner %}
+            <p>Congratulations! You have won this auction!</p>
+        {% endif %}
+    {% endif %}
+
+
+    {% if user.is_authenticated %}
+
+        {% if listing.is_active %}
+            <form action="{{listing.id}}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input class="form-control" type="number" step="0.01" name="bid" placeholder="Bid" required>
+                </div>
+                <input name="bid_form" class="btn btn-primary" type="submit" value="Place Bid">
+            </form>
+        {% endif %}
+
+        <form style="margin: 15px 0 10px 0;" action="{{listing.id}}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="is_c_user_watching" value="{{ is_c_user_watching }}">
+            {% if is_c_user_watching %}
+                <input name="watchlist_form" type="submit" class="btn btn-secondary" value="Remove from Watchlist">
+            {% else %}
+                <input name="watchlist_form" type="submit" class="btn btn-secondary" value="Add to Watchlist">
+            {% endif %}
+        </form>
+
+        {% if is_c_user_creator %}
+            {% if listing.is_active %}
+                <form style="margin: 15px 0 20px 0;" action="{{listing.id}}" method="post">
+                    {% csrf_token %}
+                    <input name="close_form" type="submit" class="btn btn-danger" value="Close the listing">
+                </form>
+            {% else %}
+                    <p><span class="badge bg-danger text-light">Listing Closed</span></p>
+            {% endif %}
+        {% endif %}
+
+    {% endif %}
+
+    <h3>Details</h3>
+    <ul>
+        <li>Listed by: <a href="#">{{listing.user.username.capitalize}}</a></li>
+        <li>Category: {% if listing.category %} {{listing.category}}  {% else %} No Category Listed {% endif %}</li>
+    </ul>
+    
+    <h3>Comments</h3>
+    <div class="card" style="margin: 5px 0;">
+        <div class="card-body">
+            <h4>New Comment</h4>
+            <form action="{{listing.id}}" method="post">
+                {% csrf_token %}
+                <textarea class="form-control" name="text"></textarea>
+                <button name="comment_form" type="submit" class="btn btn-primary" style="margin-top: 5px;">Post</button>
+            </form>
+        </div>
+    </div>
+    {% for comment in listing_comments %}
+        <div class="card" style="margin: 5px 0;">
+            <div class="card-body">
+                <h6>@{{ comment.user }}</h6>
+                <p>{{ comment.text }}</p>
+            </div>
+        </div>
+    {% endfor %}
+    
+{% endblock %}

@@ -2,6 +2,8 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models.deletion import CASCADE, RESTRICT
 
+import uuid
+
 
 class User(AbstractUser):
     pass
@@ -21,6 +23,8 @@ class Listing(models.Model):
         ('ER', 'eBay Refurbished')
     ]
 
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) # each listing uniquely identified using UUID v4
+
     title = models.CharField(max_length=64)
     description = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_listings")
@@ -31,7 +35,7 @@ class Listing(models.Model):
     category = models.CharField(max_length=2, blank=True, choices=CATEGORY_CHOICES)
 
     is_active = models.BooleanField(default=True)
-    winner = models.ForeignKey(User, blank=True, null=True, on_delete=RESTRICT, related_name="winner_listings")
+    temp_winner = models.ForeignKey(User, blank=True, null=True, on_delete=RESTRICT, related_name="winner_listings")
 
     watchers = models.ManyToManyField(User, blank=True, related_name="watchlist")
 
