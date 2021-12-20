@@ -1,0 +1,25 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<h2>Watchlist</h2>
+
+{% for listing in watchlist %}
+    <div class="card" style="margin: 5px 0;">
+        <div class="card-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-6 col-md-4">
+                        <img src="{{listing.image_url}}" class="img-fluid">
+                    </div>
+                    <div class="col-md-8">
+                        <a href="l/{{listing.id}}"><h4>{{listing.title}}</h4></a>
+                        <h6>{{listing.description}}</h6>
+                        <p><strong>Price: </strong>${{listing.current_price}}</p>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+{% endblock %}

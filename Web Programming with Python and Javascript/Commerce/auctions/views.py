@@ -17,6 +17,26 @@ def index(request):
     })
 
 
+def categories_view(request):
+    pass
+
+
+def watchlist_view(request):
+    try:
+        user = User.objects.get(username=request.user)
+
+        watchlist = user.watchlist.all()
+        print(watchlist)
+
+        return render(request, "auctions/watchlist.html", {
+            "watchlist": watchlist
+        })
+    except:
+        return render(request, "auctions/error.html", {
+            "message": "Error 404 Page Not Found"
+        })
+
+
 def create_listing_view(request):
 
     if request.method == "POST":
