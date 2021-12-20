@@ -4,6 +4,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 from .models import User, Listing, Bid, Comment
 
@@ -17,6 +18,7 @@ def index(request):
     })
 
 
+@login_required
 def categories_view(request):
 
     categories = [name for _, name in Listing.CATEGORY_CHOICES] # Get the names of all categories
@@ -39,6 +41,7 @@ def categories_view(request):
     })
 
 
+@login_required
 def watchlist_view(request):
     try:
         user = User.objects.get(username=request.user)
@@ -55,6 +58,7 @@ def watchlist_view(request):
         })
 
 
+@login_required
 def create_listing_view(request):
 
     if request.method == "POST":
