@@ -1,0 +1,44 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<h2>Categories</h2>
+
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        {% if not c_category %}
+            <a class="nav-link active" href="{% url 'categories' %}">All</a>
+        {% else %}
+            <a class="nav-link" href="{% url 'categories' %}">All</a>
+        {% endif %}
+    </li>
+    {% for category in categories %}
+    <li class="nav-item">
+        {% if c_category and c_category == category %}
+            <a class="nav-link active" href="#">{{category}}</a>
+        {% else %}
+            <a class="nav-link" href="{% url 'categories'%}?c={{category.lower}}">{{category}}</a>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+
+{% for listing in c_listings %}
+    <div class="card" style="margin: 5px 0;">
+        <div class="card-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-6 col-md-4">
+                        <img src="{{listing.image_url}}" class="img-fluid">
+                    </div>
+                    <div class="col-md-8">
+                        <a href="l/{{listing.id}}"><h4>{{listing.title}}</h4></a>
+                        <h6>{{listing.description}}</h6>
+                        <p><strong>Price: </strong>${{listing.current_price}}</p>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+{% endblock %}

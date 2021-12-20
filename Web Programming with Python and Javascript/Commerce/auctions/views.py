@@ -18,7 +18,25 @@ def index(request):
 
 
 def categories_view(request):
-    pass
+
+    categories = [name for _, name in Listing.CATEGORY_CHOICES] # Get the names of all categories
+    c_listings = Listing.objects.filter(is_active=True)  # Get all listings
+    c_category = None
+
+    if request.method == "GET":
+        if request.GET.get('c'):
+            c_category = request.GET['c'].capitalize()
+            
+            if c_category in categories:
+                c_listings = Listing.objects.filter(category=c_category, is_active=True)
+            else:
+                c_category = None
+
+    return render(request, "auctions/categories.html", {
+        "categories": categories,
+        "c_category": c_category,
+        "c_listings": c_listings
+    })
 
 
 def watchlist_view(request):
