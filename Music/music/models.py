@@ -10,16 +10,20 @@ class User(AbstractUser):
     pass
 
 
-class Album(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    title = models.CharField()
-
-
 class Artist(models.Model):
-    pass
+    name = models.CharField(max_length=64)
+    
 
 
-class Songs(models.Model):
+class Album(models.Model):
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    title = models.CharField(max_length=64)
+    image_url = models.URLField(blank=True)
+
+
+class Song(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
@@ -48,7 +52,9 @@ class Songs(models.Model):
     genre = models.CharField(max_length=2, blank=True, choices=GENRE_CHOICES)
 
 
-class Playlists(models.Model):
+class Playlist(models.Model):
     
     title = models.CharField(max_length=64)
     description = models.TextField()
+
+    songs = models.ManyToManyField(Song, blank=True, related_name="in_playlists")

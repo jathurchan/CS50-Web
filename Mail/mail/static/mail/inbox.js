@@ -142,8 +142,17 @@ function view_mail(email_id, mailbox) {
     const timestamp = document.createElement('p');
     timestamp.innerHTML = `<b>Timestamp:</b> ${email.timestamp}`;
 
-    const emV = document.querySelector('#email-view')
+    const emV = document.querySelector('#email-view');
     emV.append(sender, recipients, subject, timestamp);
+
+    // Reply
+
+    const replyB = document.createElement('button');
+    replyB.classList.add('btn', 'btn-sm', 'btn-outline-primary');
+    replyB.innerHTML = 'Reply'
+    replyB.style.marginRight = "5px";
+    replyB.onclick = () => reply_email(email);
+    emV.append(replyB);
 
     // Archive / Unarchive
 
@@ -155,7 +164,7 @@ function view_mail(email_id, mailbox) {
       } else {
         archiveB.innerHTML = 'Archive'
       }
-      emV.onclick = () => toggle_archive(email.id, email.archived);
+      archiveB.onclick = () => toggle_archive(email.id, email.archived);
       emV.append(archiveB);
     }
 
@@ -189,4 +198,25 @@ function toggle_archive(email_id, archived) {
   })
 
   load_mailbox('inbox');
+}
+
+function reply_email(email) {
+
+  // Show compose view and hide other views
+  document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#email-view').style.display = 'none';
+  document.querySelector('#compose-view').style.display = 'block';
+
+  // Fill up composition fields for reply
+
+  document.querySelector('#compose-recipients').value = email.sender;
+
+  subject = email.subject;
+  if (!subject.startsWith("Re: ")) {
+    subject = "Re: ".concat(subject);
+  }
+  document.querySelector('#compose-subject').value = subject;
+
+  document.querySelector('#compose-body').value = `On ${email.timestamp} ${email.sender} wrote: \n${email.body}`;
+
 }

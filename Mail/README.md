@@ -10,11 +10,15 @@ Designed a front-end for an email client that makes API calls to send and receiv
 - HTML
 - CSS
 
+## Demo
+
+[Mail - CS50-Web-Harvard](https://www.youtube.com/watch?v=7Tl-WHEn2gY&feature=youtu.be)
+
 ## Running Locally
 
 1. Download the folder `Mail`.
 2. In your terminal, `cd` into the `Network` directory.
-3. Run `python manage.py makemigrations network` to make migrations for the `network` app.
+3. Run `python manage.py makemigrations mail` to make migrations for the `mail` app.
 4. Run `python manage.py migrate` to apply migrations to your database.
 5. Run `python manage.py runserver` to start up the Django web server.
 6. Visit the website in your browser.
@@ -25,5 +29,6 @@ Designed a front-end for an email client that makes API calls to send and receiv
 - [x] **Mailbox**: When a user visits their Inbox, Sent mailbox, or Archive, load the appropriate mailbox.
 - [x] **View Email**: When a user clicks on an email, the user should be taken to a view where they see the content of that email.
 - [x] **Archive and Unarchive**: Allow users to archive and unarchive emails that they have received.
-- [ ] **Reply**: Allow users to reply to an email.
+- [x] **Reply**: Allow users to reply to an email.
+
 
