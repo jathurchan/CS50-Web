@@ -1,4 +1,31 @@
 
+function likeUnlike(el) {
+            
+    console.log(el.dataset.pid);
+
+    fetch(`/posts/${el.dataset.pid}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+            like: 'clicked',
+        })
+    })
+    .then(response => {
+        if (response.status === 200) {
+            return response.json();
+        } else {
+            throw new Error("ERROR")
+        }
+    })
+    .then(result => {
+        
+        console.log(result)
+
+        likeP = document.querySelector('p[data-pid="' + el.dataset.pid +'"]')
+        likeP.innerHTML = `<b>${result.numberOfLikes}</b> Likes`
+    })
+}
+
+
 function edit_post(post_id){
     document.querySelectorAll('.post-content').forEach(p_cont => {
         if (post_id === p_cont.dataset.pid) {
@@ -26,8 +53,10 @@ function save_edit(post_id) {
 
     ta = document.querySelector('textarea[data-pid="' + post_id +'"]')
 
+    console.log(`/posts/${post_id}`)
+
     fetch(`/posts/${post_id}`, {
-        method: 'PUT',
+        method: 'POST',
         body: JSON.stringify({
             text: ta.value,
         })

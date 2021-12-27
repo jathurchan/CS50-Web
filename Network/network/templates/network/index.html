@@ -24,7 +24,11 @@
             <div class="post-content" data-pid="{{post.id}}">
                 <h5 data-pid="{{post.id}}">{{ post.text }}</h5>
                 <p>{{ post.created_at }}</p>
-                <p><b>{{ post.likes }}</b> Likes</p>
+                {% if user.is_authenticated %}
+                    <p data-pid="{{post.id}}" style="cursor:pointer;" onclick="likeUnlike(this)"><b>{{ post.likes.count }}</b> Likes</p>
+                {% else %}
+                    <p style="cursor:pointer;"><b>{{ post.likes.count }}</b> Likes</p>
+                {% endif %}
                 {% if c_user.username == post.user.username %}
                     <button class="btn btn-outline-secondary" onclick="edit_post('{{post.id}}')">Edit</button>
                 {% endif %}

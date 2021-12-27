@@ -61,22 +61,40 @@ def edit_post(request, post_id):
     except:
         return JsonResponse({"error": "Post not found."}, status=404)
     
-    if request.user.username == post.user.username: # current user authorized to edit the post?
-        if request.method == "PUT":
-            data = json.loads(request.body)
-            if data.get("text") is not None:
+    if request.method == "POST":
+
+        data = json.loads(request.body)
+
+        # EDIT POST
+
+        if request.user.username == post.user.username:
+
+            if data.get("text") is not None:    
                 post.text = data["text"]
+            
             post.save()
             return JsonResponse(post.serialize())
-        else:
+    
+    elif request.method == "PUT":
+        
+        data = json.loads(request.body)
+
+        if data.get("like") is not None:
+                
+            c_user = User.objects.get(username=request.user.username)
+
+            if c_user in post.likes.all():
+                post.likes.remove(c_user)
+            else:
+                post.likes.add(c_user)
+            
             return JsonResponse({
-                "error": "PUT request required."
-            }, status=404)
+                "numberOfLikes": post.likes.count()
+            })
     else:
         return JsonResponse({
-                "error": "Unauthorized user."
+                "error": "PUT request required."
             }, status=404)
-    
 
 
 def error(request, errorTitle, errorMessage):
