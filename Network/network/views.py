@@ -1,9 +1,13 @@
+import json
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
+from django.http.response import JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 
 from .models import User, Post
 import operator
@@ -36,10 +40,43 @@ def index(request):
     except EmptyPage:   # Get to the last existing page
         c_page = p.page(p.num_pages)
 
+    c_user = None
+
+    # Get the current signed-in user
+    if request.user.is_authenticated:
+        c_user = User.objects.get(username=request.user.username)
 
     return render(request, "network/index.html", {
-        "c_page": c_page
+        "c_page": c_page,
+        "c_user": c_user
     })
+
+@csrf_exempt
+@login_required
+def edit_post(request, post_id):
+
+    # Query for requested post
+    try:
+        post = Post.objects.get(id=post_id)
+    except:
+        return JsonResponse({"error": "Post not found."}, status=404)
+    
+    if request.user.username == post.user.username: # current user authorized to edit the post?
+        if request.method == "PUT":
+            data = json.loads(request.body)
+            if data.get("text") is not None:
+                post.text = data["text"]
+            post.save()
+            return JsonResponse(post.serialize())
+        else:
+            return JsonResponse({
+                "error": "PUT request required."
+            }, status=404)
+    else:
+        return JsonResponse({
+                "error": "Unauthorized user."
+            }, status=404)
+    
 
 
 def error(request, errorTitle, errorMessage):
@@ -153,7 +190,8 @@ def profile_view(request, username):
             "following_counter": following_counter,
             "followers_counter": followers_counter,
             "c_page": c_page,
-            "is_following": is_following
+            "is_following": is_following,
+            "c_user": connected_user
         })
     except:
         return error(request, "ERROR 404", "The requested page not found !")

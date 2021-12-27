@@ -12,7 +12,7 @@ class User(AbstractUser):
 
 class Artist(models.Model):
     name = models.CharField(max_length=64)
-    
+
 
 
 class Album(models.Model):

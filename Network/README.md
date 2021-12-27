@@ -25,6 +25,6 @@ Designed a Twitter-like social network website for making posts and following us
 - [x] **Profile Page**: Clicking on a username should load that user’s profile page. This page should:
 - [x] **Following**: The “Following” link in the navigation bar should take the user to a page where they see all posts made by users that the current user follows.
 - [x] **Pagination**: On any page that displays posts, posts should only be displayed 10 on a page. If there are more than ten posts, a “Next” button should appear to take the user to the next page of posts (which should be older than the current page of posts). If not on the first page, a “Previous” button should appear to take the user to the previous page of posts as well.
-- [ ] **Edit Post**: Users should be able to click an “Edit” button or link on any of their own posts to edit that post.
+- [x] **Edit Post**: Users should be able to click an “Edit” button or link on any of their own posts to edit that post.
 - [ ] **“Like” and “Unlike”**: Users should be able to click a button or link on any post to toggle whether or not they “like” that post.
 

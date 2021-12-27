@@ -13,3 +13,12 @@ class Post(models.Model):
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True) # Automatically set the field to now when the post is created
     likes = models.IntegerField(default=0)
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user": self.user.username,
+            "text": self.text,
+            "created_at": self.created_at.strftime("%b %d %Y, %I:%M %p"),
+            "likes": self.likes
+        }

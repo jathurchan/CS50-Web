@@ -1,4 +1,5 @@
 {% extends "network/layout.html" %}
+{% load static %}
 
 {% block body %}
 
@@ -22,9 +23,20 @@
     <div class="card" style="margin: 5px 0;">
         <div class="card-body">
             <a href="{% url 'profile' username=post.user.username %}"><h6>@{{ post.user }}</h6></a>
-            <h5>{{ post.text }}</h5>
-            <p>{{ post.created_at }}</p>
-            <p><b>{{ post.likes }}</b> Likes</p>
+            <div class="post-content" data-pid="{{post.id}}">
+                <h5 data-pid="{{post.id}}">{{ post.text }}</h5>
+                <p>{{ post.created_at }}</p>
+                <p><b>{{ post.likes }}</b> Likes</p>
+                {% if c_user.username == post.user.username %}
+                    <button class="btn btn-outline-secondary" onclick="edit_post('{{post.id}}')">Edit</button>
+                {% endif %}
+            </div>
+            <div class="edit-content" data-pid="{{post.id}}" style="display:none">
+                <form id="edit-form" onsubmit="save_edit('{{post.id}}'); return false;">
+                    <textarea class="form-control edit-textarea" name="text" data-pid="{{post.id}}"></textarea>
+                    <button type="submit" class="btn btn-primary" style="margin-top: 5px;">Save</button>
+                </form>
+            </div>
         </div>
     </div>
     {% endfor %}
@@ -42,4 +54,8 @@
     </nav>
     {% endif %}
     
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'network/global.js' %}"></script>
 {% endblock %}
