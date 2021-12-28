@@ -8,7 +8,7 @@ Designed a front-end for Google Search, Google Image Search, and Google Advanced
 - CSS
 - SASS
 
-## Demo
+## Demo (YouTube)
 
 [Search - CS50-Web-Harvard](https://www.youtube.com/watch?v=9g69JSsvzGg&feature=youtu.be)
 

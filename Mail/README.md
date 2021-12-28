@@ -10,7 +10,7 @@ Designed a front-end for an email client that makes API calls to send and receiv
 - HTML
 - CSS
 
-## Demo
+## Demo (YouTube)
 
 [Mail - CS50-Web-Harvard](https://www.youtube.com/watch?v=7Tl-WHEn2gY&feature=youtu.be)
 

@@ -9,6 +9,10 @@ Designed a Twitter-like social network website for making posts and following us
 - HTML
 - CSS
 
+## Demo (YouTube)
+
+[Network - CS50-Web-Harvard](https://www.youtube.com/watch?v=ZE3hER6RolU&feature=youtu.be)
+
 ## Running Locally
 
 1. Download the folder `Network`.

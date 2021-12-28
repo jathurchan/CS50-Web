@@ -8,7 +8,7 @@ Designed an eBay-like e-commerce auction site that allows users to post auction 
 - HTML
 - CSS
 
-## Demo
+## Demo (YouTube)
 
 [Commerce - CS50-Web-Harvard](https://www.youtube.com/watch?v=qXYkpo0NlG4)
 
