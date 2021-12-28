@@ -164,21 +164,25 @@ def profile_view(request, username):
         profile_user = User.objects.get(username=username)
 
         followers = profile_user.followers
-        connected_username = request.user.username
-        
-        is_following = followers.filter(username=connected_username).count() > 0    # if 1 the connected user is already following
-        connected_user = User.objects.get(username=connected_username)
-        
-        # Toggle Follow / Following
 
-        if request.method == "POST":
+        is_following, connected_user = None, None
 
-            if is_following:
-                connected_user.following.remove(profile_user)
-            else:
-                connected_user.following.add(profile_user)
-
+        if request.user.is_authenticated:
+            connected_username = request.user.username
+            
             is_following = followers.filter(username=connected_username).count() > 0    # if 1 the connected user is already following
+            connected_user = User.objects.get(username=connected_username)
+            
+            # Toggle Follow / Following
+
+            if request.method == "POST":
+
+                if is_following:
+                    connected_user.following.remove(profile_user)
+                else:
+                    connected_user.following.add(profile_user)
+
+                is_following = followers.filter(username=connected_username).count() > 0    # if 1 the connected user is already following
 
         # Update the counters
 
