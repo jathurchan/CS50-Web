@@ -33,9 +33,9 @@
 
         <select class="form-select" aria-label="Choose Job" style="margin-bottom: 10px; border-top-left-radius: 0; border-top-right-radius: 0;">
             <option selected disabled>Select a Job</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+            {% for job in jobs %}
+                <option value={{job.id}}>{{job.title}}</option>
+            {% endfor %}
         </select>
 
         <button class="w-100 btn btn-lg btn-primary" type="submit" value="create-user">Create</button>
