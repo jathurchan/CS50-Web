@@ -1,0 +1,91 @@
+{% extends "tracker/layout.html" %}
+
+{% block title %}
+    Add Sample
+{% endblock %}
+
+{% block body %}
+<main class="mx-auto mt-5" style="max-width: 330px; padding: 15px;">
+
+    <h1 class="h3 mb-3 fw-normal">Add Sample</h1>
+
+    <div style="margin-top: 20px;">
+        <h5 class="form-label">User</h5>
+        <div class="dropdown">
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{user.first_name}} {{user.last_name}}
+            </a>
+
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="{% url 'signout' %}">Sign out</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="margin-top: 20px;">
+        <h5 class="form-label">Period</h5>
+
+        {% if open_periods %}
+            <form action="{% url 'add-sample' %}" method="post">
+                {% csrf_token %}
+                <select class="form-select" aria-label="Choose Open Period" name="period_id" style="margin-bottom: 10px;">
+                    <option selected disabled>Select an Open Period</option>
+                    {% for period in open_periods %}
+                        <option value={{period.id}}>{{period.startDate}} - {{period.endDate}}</option>
+                    {% endfor %}
+                </select>
+                <button class="w-100 btn btn-lg btn-primary" type="submit" value="choose-period">Confirm</button>
+            </form>
+        {% endif %}
+        
+        {% if selected_period %}
+            <div>
+                <select disabled class="form-select" aria-label="Choose Open Period" name="period_id" style="margin-bottom: 10px;">
+                    <option selected value={{period.id}}>{{selected_period.startDate}} - {{selected_period.endDate}}</option>
+                </select>
+                <a class="w-100 btn btn-lg btn-warning" href="{% url 'add-sample' %}">Choose another Period</a>
+            </div>
+        {% endif %}
+    </div>
+
+    {% if selected_period %}
+        <div style="margin-top: 20px;">
+            <h5 class="form-label">Sample</h5>
+
+            <form action="{% url 'create-user' %}" method="post">
+                {% csrf_token %}
+
+                <div class="form-floating">
+                    <input autofocus type="text" class="form-control" id="floatingProject" name="project" placeholder="PPPP" style="margin-bottom: -1px; border-bottom-right-radius: 0; border-bottom-left-radius: 0;">
+                    <label for="floatingProject">PPPP</label>
+                </div>
+
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="floatingGroup" name="group" placeholder="GG" style="margin-bottom: -1px; border-bottom-right-radius: 0; border-bottom-left-radius: 0; border-top-left-radius: 0; border-top-right-radius: 0;">
+                    <label for="floatingGroup">GG</label>
+                </div>
+
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="floatingTask" name="task" placeholder="TT" style="margin-bottom: 10px; border-top-left-radius: 0; border-top-right-radius: 0;">
+                    <label for="floatingTask">TTTT</label>
+                </div>
+
+                <div class="form-floating">
+                    <input autofocus type="number" class="form-control" id="floatingHours" name="hours" placeholder="Hours Spent" style="margin-bottom: -1px; border-bottom-right-radius: 0; border-bottom-left-radius: 0;">
+                    <label for="floatingHours">Hours Spent</label>
+                </div>
+
+                <div class="form-floating">
+                    <input type="number" class="form-control" id="floatingAmount" name="amount" placeholder="Amount Spent" style="margin-bottom: 10px; border-top-left-radius: 0; border-top-right-radius: 0;">
+                    <label for="floatingAmount">Amount Spent</label>
+                </div>
+                
+                <button class="w-100 btn btn-lg btn-primary" type="submit" value="create-user">Confirm</button>
+            </form>
+        </div>
+
+        <a class="w-100 btn btn-lg btn-danger" href="{% url 'add-sample' %}" style="margin-top: 10px;">Cancel</a>
+    {% endif %}
+
+</main>
+{% endblock %}
