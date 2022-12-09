@@ -1,6 +1,6 @@
 # CS50-Web-Harvard
 
-Designed and Implemented 6 different web apps to get the Professional Certificate in Computer Science for Web Programming from Harvard University.
+Designed and Implemented 5 different web apps to get the Professional Certificate in Computer Science for Web Programming from Harvard University.
 
 ## Used
 
