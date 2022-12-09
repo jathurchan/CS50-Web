@@ -10,7 +10,6 @@ Designed and Implemented 6 different web apps to get the Professional Certificat
 
 ## Projects
 
-- [**Final Project - Music**](Music): Designed a SoundCloud-like music sharing website that allows users to upload, share and stream audio.
 - [**Network**](Network): Designed a Twitter-like social network website for making posts and following users.
 - [**Mail**](Mail): Designed a front-end for an email client that makes API calls to send and receive emails.
 - [**Commerce**](Commerce): Designed an eBay-like e-commerce auction site that allows users to post auction listings, place bids on listings, comment on those listings, and add listings to a “watchlist.”
